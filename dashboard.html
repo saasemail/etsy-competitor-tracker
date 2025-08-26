@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Etsy Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">Etsy Tracker</div>
+    <div class="nav-actions">
+      <a href="/upgrade.html" class="btn btn-secondary" id="upgradeBtn">Upgrade to Pro</a>
+    </div>
+  </nav>
+  <main class="dashboard">
+    <div class="targets-header">
+      <h2>Your Tracked Targets</h2>
+      <button id="addBtn" class="btn btn-primary">Add Target</button>
+    </div>
+    <div id="targetsContainer" class="targets-list"></div>
+    <p id="emptyState" class="hint" style="display:none;">No targets yet. Add your first Etsy listing or shop.</p>
+  </main>
+  <!-- Add Modal -->
+  <div id="addModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <h3>Add Target</h3>
+      <input type="text" id="modalUrlInput" placeholder="Etsy listing or shop URL" aria-label="Etsy URL">
+      <div class="modal-actions">
+        <button id="modalCancel" class="btn btn-secondary">Cancel</button>
+        <button id="modalAdd" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+  <!-- Diff Drawer -->
+  <div id="diffDrawer" class="drawer hidden" role="dialog" aria-modal="true">
+    <div class="drawer-content">
+      <button id="closeDrawer" class="drawer-close">×</button>
+      <h3>Change Details</h3>
+      <div id="diffContent"></div>
+    </div>
+  </div>
+  <script type="module">
+    import { getTargets, refreshTarget } from './app/api.js';
+    import { normalizeUrl, isValidEtsyUrl } from './app/validators.js';
+    import { ensureSession, canAddTarget } from './app/state.js';
+    import { renderTargets } from './app/ui.js';
+    ensureSession();
+    const addBtn = document.getElementById('addBtn');
+    const addModal = document.getElementById('addModal');
+    const modalUrlInput = document.getElementById('modalUrlInput');
+    document.getElementById('modalCancel').addEventListener('click', () => {
+      addModal.classList.add('hidden');
+      modalUrlInput.value = '';
+    });
+    document.getElementById('modalAdd').addEventListener('click', async () => {
+      const raw = modalUrlInput.value.trim();
+      if (!isValidEtsyUrl(raw)) {
+        alert('Invalid Etsy URL');
+        return;
+      }
+      const url = normalizeUrl(raw);
+      try {
+        const result = await fetch('/api/targets/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        }).then(r => r.json());
+        if (result.error) {
+          alert(result.error);
+        } else {
+          addModal.classList.add('hidden');
+          modalUrlInput.value = '';
+          await loadTargets();
+        }
+      } catch (err) {
+        alert('Error adding target');
+      }
+    });
+    addBtn.addEventListener('click', () => {
+      addModal.classList.remove('hidden');
+      modalUrlInput.focus();
+    });
+    async function loadTargets() {
+      const data = await getTargets();
+      renderTargets(data, {
+        onRefresh: async (id) => {
+          await refreshTarget(id);
+          await loadTargets();
+        },
+        onViewDiff: (diff) => {
+          const drawer = document.getElementById('diffDrawer');
+          const content = document.getElementById('diffContent');
+          content.innerHTML = '';
+          diff.fieldsChanged.forEach(field => {
+            const item = document.createElement('p');
+            item.textContent = `${field}: ${diff.old[field]} → ${diff.new[field]}`;
+            content.appendChild(item);
+          });
+          drawer.classList.remove('hidden');
+        }
+      });
+      document.getElementById('emptyState').style.display = data.length ? 'none' : 'block';
+    }
+    document.getElementById('closeDrawer').addEventListener('click', () => {
+      document.getElementById('diffDrawer').classList.add('hidden');
+    });
+    loadTargets();
+  </script>
+</body>
+</html>
