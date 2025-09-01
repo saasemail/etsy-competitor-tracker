@@ -10,14 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar">
-    <h1>🍅 Pomodoro Timer</h1>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1>Pomodoro Timer</h1>
     <a href="upgrade.html" class="btn btn-secondary">Upgrade to Pro</a>
-  </header>
+  </nav>
 
-  <main class="container">
-    <p class="subtitle">Focus better with work/break cycles. Free version active.</p>
+  <div class="container">
+    <p class="subtitle">Focus better with work/break cycles. No login, no tracking.</p>
 
+    <!-- Timer -->
     <div class="timer-circle">
       <span id="time">25:00</span>
       <div id="status">Work</div>
@@ -29,18 +31,46 @@
       <button id="resetBtn" class="btn btn-secondary">Reset</button>
     </div>
 
+    <!-- Settings -->
     <section class="card">
-      <h2>Settings (Free)</h2>
-      <label>Work (minutes): <input type="number" id="workInput" value="25" min="1" max="25" disabled></label>
-      <label>Short Break (minutes): <input type="number" id="shortInput" value="5" min="1" max="5" disabled></label>
-      <label>Long Break (minutes): <input type="number" id="longInput" value="15" min="1" max="15" disabled></label>
-      <label>Long Break After Cycles: <input type="number" id="cycleInput" value="4" min="1" max="4" disabled></label>
-      <label><input type="checkbox" id="pairMode" disabled> Pair Mode (Free: 2 people only)</label>
-    </section>
-  </main>
+      <h2>Settings</h2>
 
+      <!-- FREE defaults -->
+      <label>
+        Work (minutes): 
+        <input type="number" id="workDuration" value="25" readonly />
+        <span class="badge">Free</span>
+      </label>
+
+      <label>
+        Short Break (minutes): 
+        <input type="number" id="shortBreak" value="5" readonly />
+        <span class="badge">Free</span>
+      </label>
+
+      <label>
+        Long Break (minutes): 
+        <input type="number" id="longBreak" value="15" readonly />
+        <span class="badge">Free</span>
+      </label>
+
+      <label>
+        Long Break After Cycles: 
+        <input type="number" id="cyclesBeforeLong" value="4" readonly />
+        <span class="badge">Free</span>
+      </label>
+
+      <!-- PRO feature -->
+      <label>
+        <input type="checkbox" id="pairMode" disabled />
+        Pair Mode (2 people) <span class="badge pro">Pro</span>
+      </label>
+    </section>
+  </div>
+
+  <!-- Footer -->
   <footer class="footer">
-    <p>© 2025 Pomodoro Timer · Free plan active · <a href="upgrade.html">Upgrade to Pro</a></p>
+    © 2025 Pomodoro Timer — Simple no-login focus tool.
   </footer>
 
   <script src="ui.js"></script>

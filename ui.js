@@ -1,57 +1,71 @@
-let timer;
-let timeLeft;
-let isRunning = false;
-let cycles = 0;
+// ui.js - Full Pomodoro Timer
 
-const timeEl = document.getElementById('timeLeft');
-const sessionLabel = document.getElementById('sessionLabel');
-const beep = document.getElementById('beep');
-const circle = document.querySelector('.progress-ring__circle');
-const circumference = 2 * Math.PI * 90; // r=90
-circle.style.strokeDasharray = circumference;
+let timer;
+let isRunning = false;
+let remainingSeconds;
+let currentMode = "work"; // work | shortBreak | longBreak
+let completedCycles = 0;
+
+const timeDisplay = document.getElementById("time");
+const statusDisplay = document.getElementById("status");
+
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+// Settings inputs
+const workInput = document.getElementById("workDuration");
+const shortBreakInput = document.getElementById("shortBreak");
+const longBreakInput = document.getElementById("longBreak");
+const cyclesInput = document.getElementById("cyclesBeforeLong");
+
+function updateDisplay() {
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+  timeDisplay.textContent = `${minutes}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  if (mode === "work") {
+    remainingSeconds = parseInt(workInput.value) * 60;
+    statusDisplay.textContent = "Work";
+  } else if (mode === "shortBreak") {
+    remainingSeconds = parseInt(shortBreakInput.value) * 60;
+    statusDisplay.textContent = "Short Break";
+  } else if (mode === "longBreak") {
+    remainingSeconds = parseInt(longBreakInput.value) * 60;
+    statusDisplay.textContent = "Long Break";
+  }
+  updateDisplay();
+}
 
 function startTimer() {
   if (isRunning) return;
-  const workMins = parseInt(document.getElementById('workInput').value);
-  const breakMins = parseInt(document.getElementById('breakInput').value);
-  const longBreakMins = parseInt(document.getElementById('longBreakInput').value);
-  const cyclesLimit = parseInt(document.getElementById('cyclesInput').value);
-  const pairMode = document.getElementById('pairMode').checked;
-
-  if (!timeLeft) {
-    timeLeft = workMins * 60;
-    sessionLabel.textContent = "Work";
-  }
-
   isRunning = true;
   timer = setInterval(() => {
-    timeLeft--;
-    updateDisplay();
-
-    if (timeLeft <= 0) {
-      beep.play();
+    if (remainingSeconds > 0) {
+      remainingSeconds--;
+      updateDisplay();
+    } else {
       clearInterval(timer);
       isRunning = false;
 
-      if (sessionLabel.textContent === "Work") {
-        cycles++;
-        if (cycles % cyclesLimit === 0) {
-          timeLeft = longBreakMins * 60;
-          sessionLabel.textContent = "Long Break";
+      if (currentMode === "work") {
+        completedCycles++;
+        if (completedCycles >= parseInt(cyclesInput.value)) {
+          completedCycles = 0;
+          switchMode("longBreak");
         } else {
-          timeLeft = breakMins * 60;
-          sessionLabel.textContent = "Break";
+          switchMode("shortBreak");
         }
+        startTimer(); // auto-start next mode
       } else {
-        timeLeft = workMins * 60;
-        sessionLabel.textContent = "Work";
+        switchMode("work");
+        startTimer(); // auto-start work again
       }
-
-      if (pairMode) {
-        alert("Pair Mode: Notify your partner — session ended!");
-      }
-
-      startTimer();
     }
   }, 1000);
 }
@@ -64,29 +78,13 @@ function pauseTimer() {
 function resetTimer() {
   clearInterval(timer);
   isRunning = false;
-  timeLeft = null;
-  cycles = 0;
-  timeEl.textContent = "25:00";
-  sessionLabel.textContent = "Work";
-  updateCircle(1);
+  completedCycles = 0;
+  switchMode("work");
 }
 
-function updateDisplay() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  updateCircle(timeLeft / getSessionDuration());
-}
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
 
-function getSessionDuration() {
-  const label = sessionLabel.textContent;
-  if (label === "Work") return parseInt(document.getElementById('workInput').value) * 60;
-  if (label === "Break") return parseInt(document.getElementById('breakInput').value) * 60;
-  if (label === "Long Break") return parseInt(document.getElementById('longBreakInput').value) * 60;
-  return 1;
-}
-
-function updateCircle(progress) {
-  const offset = circumference - progress * circumference;
-  circle.style.strokeDashoffset = offset;
-}
+// Initialize on page load
+switchMode("work");
