@@ -14,6 +14,7 @@
     <h1>Simple tools for everyday tasks</h1>
     <p class="subtitle">Toolboard: your no-login productivity hub.</p>
 
+    <!-- Text Case Converter -->
     <section class="tool-card">
       <h2>Text Case Converter</h2>
       <textarea id="textInput" placeholder="Enter text..."></textarea>
@@ -25,12 +26,14 @@
       <textarea id="textOutput" placeholder="Result..." readonly></textarea>
     </section>
 
+    <!-- Word Counter -->
     <section class="tool-card">
       <h2>Word Counter</h2>
       <textarea id="wordInput" placeholder="Type or paste text..."></textarea>
       <p class="result-info" id="wordCount">Words: 0 | Characters: 0</p>
     </section>
 
+    <!-- Email Extractor -->
     <section class="tool-card">
       <h2>Email Extractor</h2>
       <textarea id="emailInput" placeholder="Paste text or emails..."></textarea>
@@ -38,6 +41,16 @@
         <button class="btn btn-primary" onclick="extractEmails()">Extract Emails</button>
       </div>
       <textarea id="emailOutput" placeholder="Extracted emails..." readonly></textarea>
+    </section>
+
+    <!-- Remove Duplicate Lines -->
+    <section class="tool-card">
+      <h2>Remove Duplicate Lines</h2>
+      <textarea id="dedupeInput" placeholder="Paste text with duplicates..."></textarea>
+      <div class="tool-actions">
+        <button class="btn btn-primary" onclick="removeDuplicates()">Remove Duplicates</button>
+      </div>
+      <textarea id="dedupeOutput" placeholder="Result (unique lines)..." readonly></textarea>
     </section>
   </div>
 

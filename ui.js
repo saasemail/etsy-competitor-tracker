@@ -27,3 +27,11 @@ function extractEmails() {
   const emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g);
   document.getElementById('emailOutput').value = emails ? emails.join('\n') : 'No emails found.';
 }
+
+// === REMOVE DUPLICATE LINES ===
+function removeDuplicates() {
+  const input = document.getElementById('dedupeInput').value;
+  const lines = input.split(/\r?\n/).map(line => line.trim()).filter(line => line !== '');
+  const unique = [...new Set(lines)];
+  document.getElementById('dedupeOutput').value = unique.join('\n');
+}
