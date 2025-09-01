@@ -1,37 +1,92 @@
-// === TEXT CASE CONVERTER ===
-function convertCase(type) {
-  const input = document.getElementById('textInput').value;
-  let result = '';
+let timer;
+let timeLeft;
+let isRunning = false;
+let cycles = 0;
 
-  if (type === 'upper') result = input.toUpperCase();
-  if (type === 'lower') result = input.toLowerCase();
-  if (type === 'capitalize') {
-    result = input.replace(/\b\w/g, c => c.toUpperCase());
+const timeEl = document.getElementById('timeLeft');
+const sessionLabel = document.getElementById('sessionLabel');
+const beep = document.getElementById('beep');
+const circle = document.querySelector('.progress-ring__circle');
+const circumference = 2 * Math.PI * 90; // r=90
+circle.style.strokeDasharray = circumference;
+
+function startTimer() {
+  if (isRunning) return;
+  const workMins = parseInt(document.getElementById('workInput').value);
+  const breakMins = parseInt(document.getElementById('breakInput').value);
+  const longBreakMins = parseInt(document.getElementById('longBreakInput').value);
+  const cyclesLimit = parseInt(document.getElementById('cyclesInput').value);
+  const pairMode = document.getElementById('pairMode').checked;
+
+  if (!timeLeft) {
+    timeLeft = workMins * 60;
+    sessionLabel.textContent = "Work";
   }
 
-  document.getElementById('textOutput').value = result;
+  isRunning = true;
+  timer = setInterval(() => {
+    timeLeft--;
+    updateDisplay();
+
+    if (timeLeft <= 0) {
+      beep.play();
+      clearInterval(timer);
+      isRunning = false;
+
+      if (sessionLabel.textContent === "Work") {
+        cycles++;
+        if (cycles % cyclesLimit === 0) {
+          timeLeft = longBreakMins * 60;
+          sessionLabel.textContent = "Long Break";
+        } else {
+          timeLeft = breakMins * 60;
+          sessionLabel.textContent = "Break";
+        }
+      } else {
+        timeLeft = workMins * 60;
+        sessionLabel.textContent = "Work";
+      }
+
+      if (pairMode) {
+        alert("Pair Mode: Notify your partner — session ended!");
+      }
+
+      startTimer();
+    }
+  }, 1000);
 }
 
-// === WORD COUNTER ===
-const wordInput = document.getElementById('wordInput');
-wordInput.addEventListener('input', () => {
-  const text = wordInput.value.trim();
-  const words = text.length > 0 ? text.split(/\s+/).length : 0;
-  const chars = text.length;
-  document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${chars}`;
-});
-
-// === EMAIL EXTRACTOR ===
-function extractEmails() {
-  const text = document.getElementById('emailInput').value;
-  const emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g);
-  document.getElementById('emailOutput').value = emails ? emails.join('\n') : 'No emails found.';
+function pauseTimer() {
+  clearInterval(timer);
+  isRunning = false;
 }
 
-// === REMOVE DUPLICATE LINES ===
-function removeDuplicates() {
-  const input = document.getElementById('dedupeInput').value;
-  const lines = input.split(/\r?\n/).map(line => line.trim()).filter(line => line !== '');
-  const unique = [...new Set(lines)];
-  document.getElementById('dedupeOutput').value = unique.join('\n');
+function resetTimer() {
+  clearInterval(timer);
+  isRunning = false;
+  timeLeft = null;
+  cycles = 0;
+  timeEl.textContent = "25:00";
+  sessionLabel.textContent = "Work";
+  updateCircle(1);
+}
+
+function updateDisplay() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  timeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  updateCircle(timeLeft / getSessionDuration());
+}
+
+function getSessionDuration() {
+  const label = sessionLabel.textContent;
+  if (label === "Work") return parseInt(document.getElementById('workInput').value) * 60;
+  if (label === "Break") return parseInt(document.getElementById('breakInput').value) * 60;
+  if (label === "Long Break") return parseInt(document.getElementById('longBreakInput').value) * 60;
+  return 1;
+}
+
+function updateCircle(progress) {
+  const offset = circumference - progress * circumference;
+  circle.style.strokeDashoffset = offset;
 }
