@@ -1,4 +1,4 @@
-// ui.js - Full Pomodoro Timer
+// ui.js - Full Pomodoro Timer with Pair Mode (basic)
 
 let timer;
 let isRunning = false;
@@ -18,6 +18,7 @@ const workInput = document.getElementById("workDuration");
 const shortBreakInput = document.getElementById("shortBreak");
 const longBreakInput = document.getElementById("longBreak");
 const cyclesInput = document.getElementById("cyclesBeforeLong");
+const pairModeCheckbox = document.getElementById("pairMode");
 
 function updateDisplay() {
   const minutes = Math.floor(remainingSeconds / 60);
@@ -61,10 +62,10 @@ function startTimer() {
         } else {
           switchMode("shortBreak");
         }
-        startTimer(); // auto-start next mode
+        startTimer();
       } else {
         switchMode("work");
-        startTimer(); // auto-start work again
+        startTimer();
       }
     }
   }, 1000);
@@ -82,9 +83,17 @@ function resetTimer() {
   switchMode("work");
 }
 
+// === Pair Mode Demo ===
+pairModeCheckbox.addEventListener("change", () => {
+  if (pairModeCheckbox.checked) {
+    // Free version: max 2 users
+    alert("Pair Mode active: Free supports up to 2 users. Upgrade to Pro for up to 10!");
+  }
+});
+
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
 
-// Initialize on page load
+// Initialize
 switchMode("work");

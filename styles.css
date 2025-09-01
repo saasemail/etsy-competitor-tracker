@@ -158,6 +158,19 @@ a:hover {
   color: var(--text);
 }
 
+.badge {
+  background: var(--accent2);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.4rem;
+  margin-left: 0.5rem;
+}
+
+.badge.pro {
+  background: crimson;
+}
+
 /* Footer */
 .footer {
   text-align: center;
