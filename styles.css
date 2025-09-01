@@ -167,8 +167,10 @@ a:hover {
   margin-left: 0.5rem;
 }
 
-.badge.pro {
-  background: crimson;
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
 }
 
 /* Footer */
@@ -178,27 +180,4 @@ a:hover {
   color: var(--muted);
   border-top: 1px solid var(--border);
   font-size: 0.9rem;
-}
-
-/* Upgrade Page */
-.plans-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 2rem 0;
-}
-
-.plans-table th,
-.plans-table td {
-  border: 1px solid var(--border);
-  padding: 0.75rem;
-  text-align: center;
-}
-
-.plans-table th {
-  background: var(--card);
-}
-
-.upgrade-actions {
-  text-align: center;
-  margin-top: 2rem;
 }

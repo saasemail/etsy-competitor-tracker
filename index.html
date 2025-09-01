@@ -17,7 +17,7 @@
   </nav>
 
   <div class="container">
-    <p class="subtitle">Focus better with work & break cycles. Free for 2 users. Pro unlocks more.</p>
+    <p class="subtitle">Stay focused with work & break cycles.</p>
 
     <!-- Timer -->
     <div class="timer-circle">
@@ -35,35 +35,31 @@
     <section class="card">
       <h2>Settings</h2>
 
-      <label title="Focused work duration in minutes">
+      <label>
         Work (minutes):
         <input type="number" id="workDuration" value="25" readonly />
         <span class="badge">Free</span>
       </label>
 
-      <label title="Short pause after each work cycle">
+      <label>
         Short Break (minutes):
         <input type="number" id="shortBreak" value="5" readonly />
         <span class="badge">Free</span>
       </label>
 
-      <label title="Longer pause after several cycles">
+      <label>
         Long Break (minutes):
         <input type="number" id="longBreak" value="15" readonly />
         <span class="badge">Free</span>
       </label>
 
-      <label title="How many work cycles before long break">
+      <label>
         Long Break After Cycles:
         <input type="number" id="cyclesBeforeLong" value="4" readonly />
         <span class="badge">Free</span>
       </label>
 
-      <!-- Pair Mode -->
-      <label title="Run timer with your partner (Free = 2 people, Pro = up to 10)">
-        <input type="checkbox" id="pairMode" />
-        Pair Mode (2 people free, Pro up to 10) 
-      </label>
+      <p class="hint">Upgrade to Pro to customize durations.</p>
     </section>
   </div>
 
