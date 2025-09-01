@@ -4,49 +4,44 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Etsy Competitor Tracker</title>
+  <title>Toolboard</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="hero">
-    <h1 class="hero-title">Know your competition.<br><span class="underline">Grow smarter</span>.</h1>
-    <p class="hero-subtitle">Track price and listing changes on Etsy competitors in one place.</p>
-    <div class="input-wrapper">
-      <input type="text" id="urlInput" placeholder="Enter Etsy listing or shop URL" aria-label="Etsy URL">
-      <button id="trackBtn" class="btn btn-primary">Track Now</button>
-    </div>
-    <p id="landingHint" class="hint">Paste an Etsy listing or shop URL to begin.</p>
+    <h1 class="hero-title">Simple tools for everyday tasks</h1>
+    <p class="hero-subtitle">Toolboard: your no-login productivity hub.</p>
   </header>
-  <script type="module">
-    import { normalizeUrl, isValidEtsyUrl } from './app/validators.js';
-    import { addTarget } from './app/api.js';
-    import { ensureSession } from './app/state.js';
-    ensureSession();
-    const input = document.getElementById('urlInput');
-    document.getElementById('trackBtn').addEventListener('click', async () => {
-      const raw = input.value.trim();
-      if (!raw) return;
-      if (!isValidEtsyUrl(raw)) {
-        alert('Please enter a valid Etsy listing or shop URL.');
-        return;
-      }
-      const url = normalizeUrl(raw);
-      try {
-        const res = await addTarget(url);
-        if (res.error) {
-          alert(res.error);
-          return;
-        }
-        window.location.href = '/dashboard.html';
-      } catch (err) {
-        alert('Unable to add target. Please try again later.');
-        console.error(err);
-      }
-    });
-  </script>
+
+  <main class="dashboard">
+    <section class="tool-card">
+      <h2>Text Case Converter</h2>
+      <textarea id="caseInput" placeholder="Enter text..."></textarea>
+      <div class="btn-group">
+        <button onclick="convertCase('upper')">UPPERCASE</button>
+        <button onclick="convertCase('lower')">lowercase</button>
+        <button onclick="convertCase('capitalize')">Capitalize</button>
+      </div>
+      <textarea id="caseOutput" readonly placeholder="Result..."></textarea>
+    </section>
+
+    <section class="tool-card">
+      <h2>Word Counter</h2>
+      <textarea id="wordInput" placeholder="Enter your text..."></textarea>
+      <div class="output" id="wordCountOutput">Words: 0 | Characters: 0</div>
+    </section>
+
+    <section class="tool-card">
+      <h2>Email Extractor</h2>
+      <textarea id="emailInput" placeholder="Paste text or emails..."></textarea>
+      <button onclick="extractEmails()">Extract Emails</button>
+      <textarea id="emailOutput" readonly placeholder="Extracted emails..."></textarea>
+    </section>
+  </main>
+
+  <script type="module" src="ui.js"></script>
 </body>
 </html>

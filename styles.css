@@ -1,4 +1,3 @@
-/* Root variables for colors and fonts */
 :root {
   --bg: #0b0e13;
   --card: #121723;
@@ -34,11 +33,11 @@ a {
   text-decoration: none;
 }
 
-/* Hero */
+/* Hero / Header */
 .hero {
-  padding: 4rem 1rem 3rem;
+  padding: 4rem 1rem 2rem;
   text-align: center;
-  background: radial-gradient(circle at 50% 20%, rgba(142,84,246,0.4), transparent 70%);
+  background: radial-gradient(circle at 50% 20%, rgba(142,84,246,0.3), transparent 70%);
 }
 .hero-title {
   font-size: 2.5rem;
@@ -63,7 +62,7 @@ a {
   align-items: center;
   gap: 0.5rem;
 }
-input[type="text"] {
+input[type="text"], input[type="url"] {
   width: 100%;
   max-width: 420px;
   padding: 0.75rem 1rem;
@@ -101,142 +100,38 @@ input[type="text"] {
   margin-top: 0.5rem;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid var(--border);
-}
-.nav-brand {
-  font-family: 'Sora', sans-serif;
-  font-weight: 700;
-  font-size: 1.25rem;
-}
-.nav-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-/* Dashboard */
-.dashboard {
-  flex: 1;
+/* Tool List */
+.tools-container {
   padding: 2rem 1rem;
   max-width: 960px;
   margin: 0 auto;
 }
-.targets-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.tool-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
   margin-bottom: 1rem;
-}
-.targets-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-}
-.target-card {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.target-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.sparkline {
-  height: 40px;
+.tool-info {
+  flex: 1;
 }
-
-/* Modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
+.tool-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.tool-description {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+.tool-actions {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-.modal.hidden {
-  display: none;
-}
-.modal-content {
-  background-color: var(--card);
-  padding: 2rem;
-  border-radius: var(--radius);
-  max-width: 420px;
-  width: 100%;
-}
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-/* Drawer */
-.drawer {
-  position: fixed;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 300px;
-  background-color: var(--card);
-  border-left: 1px solid var(--border);
-  box-shadow: -4px 0 10px rgba(0,0,0,0.3);
-  overflow-y: auto;
-  z-index: 101;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-}
-.drawer:not(.hidden) {
-  transform: translateX(0);
-}
-.drawer-content {
-  padding: 1rem;
-}
-.drawer-close {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Upgrade page */
-.upgrade-page {
-  max-width: 960px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
-.plans-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-.plans-table th,
-.plans-table td {
-  padding: 0.5rem;
-  border: 1px solid var(--border);
-}
-.plans-table th {
-  background-color: var(--card);
-}
-
-/* Legal pages */
-.legal-page {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
+  flex-wrap: wrap;
 }
