@@ -14,30 +14,31 @@
     <h1>Simple tools for everyday tasks</h1>
     <p class="subtitle">Toolboard: your no-login productivity hub.</p>
 
-    <section class="card">
+    <section class="tool-card">
       <h2>Text Case Converter</h2>
-      <textarea id="textInput"></textarea>
-      <div class="button-group">
-        <button onclick="convertCase('upper')">UPPERCASE</button>
-        <button onclick="convertCase('lower')">lowercase</button>
-        <button onclick="convertCase('capitalize')">Capitalize</button>
+      <textarea id="textInput" placeholder="Enter text..."></textarea>
+      <div class="tool-actions">
+        <button class="btn btn-primary" onclick="convertCase('upper')">UPPERCASE</button>
+        <button class="btn btn-primary" onclick="convertCase('lower')">lowercase</button>
+        <button class="btn btn-primary" onclick="convertCase('capitalize')">Capitalize</button>
       </div>
-      <textarea id="textOutput" placeholder="Result..."></textarea>
+      <textarea id="textOutput" placeholder="Result..." readonly></textarea>
     </section>
 
-    <section class="card">
+    <section class="tool-card">
       <h2>Word Counter</h2>
-      <textarea id="wordInput" oninput="updateWordCount()" placeholder="Type or paste text..."></textarea>
-      <p class="count-display">Words: <span id="wordCount">0</span> | Characters: <span id="charCount">0</span></p>
+      <textarea id="wordInput" placeholder="Type or paste text..."></textarea>
+      <p class="result-info" id="wordCount">Words: 0 | Characters: 0</p>
     </section>
 
-    <section class="card">
+    <section class="tool-card">
       <h2>Email Extractor</h2>
       <textarea id="emailInput" placeholder="Paste text or emails..."></textarea>
-      <button onclick="extractEmails()">Extract Emails</button>
-      <textarea id="emailOutput" placeholder="Extracted emails..."></textarea>
+      <div class="tool-actions">
+        <button class="btn btn-primary" onclick="extractEmails()">Extract Emails</button>
+      </div>
+      <textarea id="emailOutput" placeholder="Extracted emails..." readonly></textarea>
     </section>
-
   </div>
 
   <script src="ui.js"></script>
