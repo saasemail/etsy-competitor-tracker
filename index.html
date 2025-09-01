@@ -3,55 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toolboard - Pomodoro Timer</title>
+  <title>Pomodoro Timer</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>Pomodoro Timer</h1>
-    <p class="subtitle">Focus better with work/break cycles. No login, no tracking.</p>
+  <header class="navbar">
+    <h1>🍅 Pomodoro Timer</h1>
+    <a href="upgrade.html" class="btn btn-secondary">Upgrade to Pro</a>
+  </header>
 
-    <!-- Timer Display -->
-    <div class="timer-display">
-      <svg class="progress-ring" width="200" height="200">
-        <circle class="progress-ring__circle" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="90" cx="100" cy="100"/>
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#6ee7f9"/>
-            <stop offset="100%" stop-color="#8b5cf6"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <div id="timeLeft" class="time-left">25:00</div>
-      <p id="sessionLabel" class="session-label">Work</p>
+  <main class="container">
+    <p class="subtitle">Focus better with work/break cycles. Free version active.</p>
+
+    <div class="timer-circle">
+      <span id="time">25:00</span>
+      <div id="status">Work</div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-      <button class="btn btn-primary" onclick="startTimer()">Start</button>
-      <button class="btn btn-secondary" onclick="pauseTimer()">Pause</button>
-      <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+    <div class="button-group">
+      <button id="startBtn" class="btn btn-primary">Start</button>
+      <button id="pauseBtn" class="btn btn-secondary">Pause</button>
+      <button id="resetBtn" class="btn btn-secondary">Reset</button>
     </div>
 
-    <!-- Settings -->
-    <section class="settings">
-      <h2>Settings</h2>
-      <label>Work (minutes): <input type="number" id="workInput" value="25" min="1" /></label>
-      <label>Short Break (minutes): <input type="number" id="breakInput" value="5" min="1" /></label>
-      <label>Long Break (minutes): <input type="number" id="longBreakInput" value="15" min="1" /></label>
-      <label>Long Break After Cycles: <input type="number" id="cyclesInput" value="4" min="1" /></label>
-      <label><input type="checkbox" id="pairMode" /> Pair Mode (2 people)</label>
+    <section class="card">
+      <h2>Settings (Free)</h2>
+      <label>Work (minutes): <input type="number" id="workInput" value="25" min="1" max="25" disabled></label>
+      <label>Short Break (minutes): <input type="number" id="shortInput" value="5" min="1" max="5" disabled></label>
+      <label>Long Break (minutes): <input type="number" id="longInput" value="15" min="1" max="15" disabled></label>
+      <label>Long Break After Cycles: <input type="number" id="cycleInput" value="4" min="1" max="4" disabled></label>
+      <label><input type="checkbox" id="pairMode" disabled> Pair Mode (Free: 2 people only)</label>
     </section>
+  </main>
 
-    <footer class="footer">
-      © 2025 Toolboard — Simple no-login tools for focus.
-    </footer>
-  </div>
+  <footer class="footer">
+    <p>© 2025 Pomodoro Timer · Free plan active · <a href="upgrade.html">Upgrade to Pro</a></p>
+  </footer>
 
-  <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
   <script src="ui.js"></script>
 </body>
 </html>
