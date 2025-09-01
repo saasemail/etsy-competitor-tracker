@@ -1,77 +1,34 @@
 // ui.js
 
-/**
- * Render tools from localStorage
- */
-export function renderTools() {
-  const container = document.getElementById('toolsContainer');
-  container.innerHTML = '';
-  const tools = JSON.parse(localStorage.getItem('tools') || '[]');
+// === TEXT CASE CONVERTER ===
+document.getElementById('uppercaseBtn').addEventListener('click', () => {
+  const input = document.getElementById('caseInput').value;
+  document.getElementById('caseResult').value = input.toUpperCase();
+});
+document.getElementById('lowercaseBtn').addEventListener('click', () => {
+  const input = document.getElementById('caseInput').value;
+  document.getElementById('caseResult').value = input.toLowerCase();
+});
+document.getElementById('capitalizeBtn').addEventListener('click', () => {
+  const input = document.getElementById('caseInput').value;
+  const capitalized = input.replace(/\b\w/g, c => c.toUpperCase());
+  document.getElementById('caseResult').value = capitalized;
+});
 
-  if (tools.length === 0) {
-    const empty = document.createElement('p');
-    empty.textContent = 'No tools saved yet.';
-    empty.style.color = 'var(--muted)';
-    container.appendChild(empty);
-    return;
-  }
+// === WORD COUNTER ===
+const wordInput = document.getElementById('wordInput');
+const wordCountDisplay = document.getElementById('wordCount');
 
-  tools.forEach(tool => {
-    const card = document.createElement('div');
-    card.className = 'tool';
+wordInput.addEventListener('input', () => {
+  const text = wordInput.value.trim();
+  const words = text.length > 0 ? text.split(/\s+/).length : 0;
+  const chars = text.length;
+  wordCountDisplay.textContent = `Words: ${words} | Characters: ${chars}`;
+});
 
-    const title = document.createElement('h3');
-    title.textContent = tool.title;
-    card.appendChild(title);
-
-    const content = document.createElement('p');
-    content.textContent = tool.content;
-    content.className = 'tool-content';
-    card.appendChild(content);
-
-    const actions = document.createElement('div');
-    actions.className = 'tool-actions';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-secondary';
-    copyBtn.textContent = 'Copy';
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(tool.content);
-    });
-    actions.appendChild(copyBtn);
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn btn-danger';
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', () => {
-      const updated = tools.filter(t => t !== tool);
-      localStorage.setItem('tools', JSON.stringify(updated));
-      renderTools();
-    });
-    actions.appendChild(deleteBtn);
-
-    card.appendChild(actions);
-    container.appendChild(card);
-  });
-}
-
-/**
- * Save a new tool from textarea
- */
-export function setupForm() {
-  const titleInput = document.getElementById('toolTitle');
-  const contentInput = document.getElementById('toolContent');
-  const saveBtn = document.getElementById('saveTool');
-
-  saveBtn.addEventListener('click', () => {
-    const title = titleInput.value.trim();
-    const content = contentInput.value.trim();
-    if (!title || !content) return alert('Please fill in both fields.');
-    const tools = JSON.parse(localStorage.getItem('tools') || '[]');
-    tools.push({ title, content });
-    localStorage.setItem('tools', JSON.stringify(tools));
-    titleInput.value = '';
-    contentInput.value = '';
-    renderTools();
-  });
-}
+// === EMAIL EXTRACTOR ===
+document.getElementById('extractBtn').addEventListener('click', () => {
+  const text = document.getElementById('emailInput').value;
+  const emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g);
+  document.getElementById('emailOutput').value = emails ? emails.join('\n') : 'No emails found.';
+});
