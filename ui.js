@@ -1,88 +1,48 @@
-// ui.js - Clean Pomodoro Timer
+// ui.js - QR Expiry Links
 
-let timer;
-let isRunning = false;
-let remainingSeconds;
-let currentMode = "work"; // work | shortBreak | longBreak
-let completedCycles = 0;
+const urlInput = document.getElementById("urlInput");
+const expiryInput = document.getElementById("expiryInput");
+const generateBtn = document.getElementById("generateBtn");
 
-// Elements
-const timeDisplay = document.getElementById("time");
-const statusDisplay = document.getElementById("status");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const resetBtn = document.getElementById("resetBtn");
+const resultCard = document.getElementById("resultCard");
+const qrcodeCanvas = document.getElementById("qrcode");
+const generatedLink = document.getElementById("generatedLink");
+const expiryHint = document.getElementById("expiryHint");
 
-// Settings
-const workInput = document.getElementById("workDuration");
-const shortBreakInput = document.getElementById("shortBreak");
-const longBreakInput = document.getElementById("longBreak");
-const cyclesInput = document.getElementById("cyclesBeforeLong");
+let expiryTimer;
 
-function updateDisplay() {
-  const minutes = Math.floor(remainingSeconds / 60);
-  const seconds = remainingSeconds % 60;
-  timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
+generateBtn.addEventListener("click", () => {
+  const url = urlInput.value.trim();
+  const expiryMinutes = parseInt(expiryInput.value);
 
-function switchMode(mode) {
-  currentMode = mode;
-  if (mode === "work") {
-    remainingSeconds = parseInt(workInput.value) * 60;
-    statusDisplay.textContent = "Work";
-  } else if (mode === "shortBreak") {
-    remainingSeconds = parseInt(shortBreakInput.value) * 60;
-    statusDisplay.textContent = "Short Break";
-  } else if (mode === "longBreak") {
-    remainingSeconds = parseInt(longBreakInput.value) * 60;
-    statusDisplay.textContent = "Long Break";
+  if (!url) {
+    alert("Please enter a valid URL.");
+    return;
   }
-  updateDisplay();
-}
+  if (!expiryMinutes || expiryMinutes < 1) {
+    alert("Expiry must be at least 1 minute.");
+    return;
+  }
 
-function startTimer() {
-  if (isRunning) return;
-  isRunning = true;
-  timer = setInterval(() => {
-    if (remainingSeconds > 0) {
-      remainingSeconds--;
-      updateDisplay();
-    } else {
-      clearInterval(timer);
-      isRunning = false;
+  // Clear previous expiry timer
+  clearTimeout(expiryTimer);
 
-      if (currentMode === "work") {
-        completedCycles++;
-        if (completedCycles >= parseInt(cyclesInput.value)) {
-          completedCycles = 0;
-          switchMode("longBreak");
-        } else {
-          switchMode("shortBreak");
-        }
-        startTimer();
-      } else {
-        switchMode("work");
-        startTimer();
-      }
-    }
-  }, 1000);
-}
+  // Show link and QR
+  generatedLink.textContent = url;
+  generatedLink.href = url;
 
-function pauseTimer() {
-  clearInterval(timer);
-  isRunning = false;
-}
+  QRCode.toCanvas(qrcodeCanvas, url, { width: 200 }, function (error) {
+    if (error) console.error(error);
+  });
 
-function resetTimer() {
-  clearInterval(timer);
-  isRunning = false;
-  completedCycles = 0;
-  switchMode("work");
-}
+  resultCard.classList.remove("hidden");
 
-startBtn.addEventListener("click", startTimer);
-pauseBtn.addEventListener("click", pauseTimer);
-resetBtn.addEventListener("click", resetTimer);
+  // Expiry handling
+  expiryHint.textContent = `This link will expire in ${expiryMinutes} minutes.`;
 
-// Initialize
-switchMode("work");
+  expiryTimer = setTimeout(() => {
+    qrcodeCanvas.getContext("2d").clearRect(0, 0, qrcodeCanvas.width, qrcodeCanvas.height);
+    generatedLink.textContent = "";
+    expiryHint.textContent = "This link has expired.";
+  }, expiryMinutes * 60 * 1000);
+});

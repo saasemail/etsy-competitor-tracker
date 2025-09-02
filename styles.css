@@ -23,8 +23,8 @@ body {
   flex-direction: column;
 }
 
-h1, h2, h3 {
-  font-family: 'Inter', sans-serif;
+h1, h2 {
+  font-weight: 700;
   margin: 0;
 }
 
@@ -32,7 +32,6 @@ a {
   color: var(--accent1);
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }
@@ -40,7 +39,6 @@ a:hover {
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--card);
@@ -55,7 +53,7 @@ a:hover {
 /* Container */
 .container {
   flex: 1;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
@@ -64,41 +62,48 @@ a:hover {
 .subtitle {
   color: var(--muted);
   margin-bottom: 2rem;
-  font-size: 1rem;
 }
 
-/* Timer Circle */
-.timer-circle {
-  width: 220px;
-  height: 220px;
-  margin: 1rem auto;
-  border-radius: 50%;
-  border: 6px solid;
-  border-image: linear-gradient(90deg, var(--accent1), var(--accent2)) 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: 700;
+/* Cards */
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  text-align: left;
 }
 
-.timer-circle span {
-  font-size: 2.5rem;
+.card h2 {
+  margin-bottom: 1rem;
 }
 
-#status {
-  margin-top: 0.5rem;
-  font-size: 1rem;
-  color: var(--muted);
+label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+input[type="url"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hidden {
+  display: none;
 }
 
 /* Buttons */
 .button-group {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin: 1.5rem 0 2rem;
+  margin-top: 1rem;
 }
 
 .btn {
@@ -116,61 +121,16 @@ a:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-.btn-secondary {
-  color: var(--text);
-  background-color: var(--card);
-  border: 1px solid var(--border);
-}
-
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-/* Cards / Settings */
-.card {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  margin: 2rem auto;
-  text-align: left;
-  max-width: 600px;
-}
-
-.card h2 {
-  margin-bottom: 1rem;
-}
-
-.card label {
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-}
-
-.card input[type="number"] {
-  margin-left: 0.5rem;
-  width: 60px;
-  padding: 0.3rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-}
-
-.badge {
-  background: var(--accent2);
-  color: white;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.75rem;
-  border-radius: 0.4rem;
-  margin-left: 0.5rem;
 }
 
 .hint {
   font-size: 0.85rem;
   color: var(--muted);
   margin-top: 0.5rem;
+  text-align: center;
 }
 
 /* Footer */
